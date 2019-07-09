@@ -1,5 +1,6 @@
 package ru.ktsstudio.myapplication.app
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.ktsstudio.myapplication.auth.AuthFragmentContainer
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity(), ActivityNavigator {
         if (savedInstanceState == null) {
             navigateToLoginScreen()
         }
+
     }
 
     override fun navigateToMainScreen() {

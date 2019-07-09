@@ -3,4 +3,6 @@
     <string name="hello_world">Hello world</string>
     <string name="logout">Logout</string>
     <string name="back_to_login">Back to login</string>
+    <string name="check_permissions">Check permissions</string>
+    <string name="permission_rationale">Объяснение для чего нужен пермишн</string>
 </resources>
