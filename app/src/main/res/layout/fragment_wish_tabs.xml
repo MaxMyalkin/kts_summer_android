@@ -12,8 +12,26 @@
 
     <Button
         android:id="@+id/checkPermissions"
-        android:text="@string/check_permissions"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/check_permissions" />
+
+    <Button
+        android:id="@+id/checkNetworkHttpUrlConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/httpurlconnection" />
+
+    <Button
+        android:id="@+id/checkOkhttp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/okhttp" />
+
+    <Button
+        android:id="@+id/checkRetrofit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retrofit" />
 
 </LinearLayout>

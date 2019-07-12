@@ -1,4 +1,4 @@
-package ru.ktsstudio.myapplication.app
+package ru.ktsstudio.myapplication.ui.app
 
 interface ActivityNavigator {
     fun navigateToMainScreen()

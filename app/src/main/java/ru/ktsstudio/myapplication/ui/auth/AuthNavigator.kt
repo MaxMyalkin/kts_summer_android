@@ -1,4 +1,4 @@
-package ru.ktsstudio.myapplication.auth
+package ru.ktsstudio.myapplication.ui.auth
 
 interface AuthNavigator {
     fun navigateToRegistration()

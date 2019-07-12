@@ -5,4 +5,7 @@
     <string name="back_to_login">Back to login</string>
     <string name="check_permissions">Check permissions</string>
     <string name="permission_rationale">Объяснение для чего нужен пермишн</string>
+    <string name="httpurlconnection">HttpUrlConnection</string>
+    <string name="okhttp">OkHttp</string>
+    <string name="retrofit">Retrofit</string>
 </resources>

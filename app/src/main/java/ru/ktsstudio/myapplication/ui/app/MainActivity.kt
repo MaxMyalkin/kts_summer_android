@@ -1,10 +1,9 @@
-package ru.ktsstudio.myapplication.app
+package ru.ktsstudio.myapplication.ui.app
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.ktsstudio.myapplication.auth.AuthFragmentContainer
-import ru.ktsstudio.myapplication.main.MainFragmentContainer
+import ru.ktsstudio.myapplication.ui.auth.AuthFragmentContainer
+import ru.ktsstudio.myapplication.ui.main.MainFragmentContainer
 import ru.ktsstudio.myapplication.R
 
 class MainActivity : AppCompatActivity(), ActivityNavigator {
