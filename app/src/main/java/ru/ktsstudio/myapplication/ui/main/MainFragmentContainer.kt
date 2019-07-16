@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.ktsstudio.myapplication.R
+import ru.ktsstudio.myapplication.ui.main.image.ImageFragment
 
 class MainFragmentContainer : Fragment(), MainNavigator {
 
@@ -20,9 +21,13 @@ class MainFragmentContainer : Fragment(), MainNavigator {
         }
     }
 
-    override fun navigateToWithTabs() {
+    override fun navigateToWithTabs() = replaceFragment(WishTabsFragment())
+
+    override fun navigateToImages() = replaceFragment(ImageFragment())
+
+    private fun replaceFragment(fragment: Fragment) {
         childFragmentManager.beginTransaction()
-            .replace(R.id.content, WishTabsFragment())
+            .replace(R.id.content, fragment)
             .commitNow()
     }
 }

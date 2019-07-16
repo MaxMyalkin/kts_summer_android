@@ -3,7 +3,7 @@ package ru.ktsstudio.myapplication.data.stores
 import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import ru.ktsstudio.myapplication.ui.main.AddTokenHeaderInterceptor
+import ru.ktsstudio.myapplication.data.network.AddTokenHeaderInterceptor
 
 object OkHttp {
 

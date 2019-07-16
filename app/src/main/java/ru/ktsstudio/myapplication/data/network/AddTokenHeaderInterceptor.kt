@@ -1,4 +1,4 @@
-package ru.ktsstudio.myapplication.ui.main
+package ru.ktsstudio.myapplication.data.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

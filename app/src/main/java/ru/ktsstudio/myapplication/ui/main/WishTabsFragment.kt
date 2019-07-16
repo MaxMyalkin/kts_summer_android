@@ -41,15 +41,15 @@ class WishTabsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.logout).setOnClickListener {
+        logout.setOnClickListener {
             requireActivity().let { it as ActivityNavigator }.navigateToLoginScreen()
         }
-
+        images.setOnClickListener { parentFragment.let { it as MainNavigator }.navigateToImages() }
         checkNetworkHttpUrlConnection.setOnClickListener { checkHttpUrlConnection() }
         checkOkhttp.setOnClickListener { checkOkHttp() }
         checkRetrofit.setOnClickListener { checkRetrofit() }
 
-        view.findViewById<Button>(R.id.checkPermissions).setOnClickListener {
+        checkPermissions.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.READ_CONTACTS

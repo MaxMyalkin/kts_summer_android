@@ -19,6 +19,7 @@ import ru.ktsstudio.myapplication.data.models.GithubUser
 import ru.ktsstudio.myapplication.data.models.ReactionCreateBody
 import ru.ktsstudio.myapplication.data.models.ReactionType
 import ru.ktsstudio.myapplication.data.models.RepositorySort
+import ru.ktsstudio.myapplication.data.models.SearchWrapper
 import ru.ktsstudio.myapplication.data.models.SortOrder
 
 interface GithubApiService {
@@ -33,7 +34,12 @@ interface GithubApiService {
         @Query("q") searchQuery: String,
         @Query("sort") sort: RepositorySort?,
         @Query("order") order: SortOrder?
-    ): Call<List<GithubRepository>>
+    ): Call<SearchWrapper<GithubRepository>>
+
+    @GET("/search/users")
+    fun searchUsers(
+        @Query("q") searchQuery: String
+    ): Call<SearchWrapper<GithubUser>>
 
     @GET("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     fun getCommentReactions(

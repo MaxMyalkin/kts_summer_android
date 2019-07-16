@@ -8,4 +8,8 @@
     <string name="httpurlconnection">HttpUrlConnection</string>
     <string name="okhttp">OkHttp</string>
     <string name="retrofit">Retrofit</string>
+    <string name="search_image">Search image</string>
+    <string name="search">Search</string>
+    <string name="images">Images</string>
+    <string name="image_list_is_empty">Image list is empty</string>
 </resources>

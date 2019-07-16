@@ -19,6 +19,10 @@ android {
         }
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     compileOptions {
         targetCompatibility = "8"
         sourceCompatibility = "8"
@@ -37,4 +41,13 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:3.14.2"
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"
+
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.9.0"
+    implementation ("com.github.bumptech.glide:glide:4.9.0") {
+        exclude group: "com.android.support"
+    }
+
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-3'
+
 }
