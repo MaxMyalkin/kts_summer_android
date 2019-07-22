@@ -7,13 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.reflect.TypeToken
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_wish_tabs.*
 import okhttp3.Call
 import okhttp3.Callback
@@ -21,6 +22,8 @@ import okhttp3.Request
 import okhttp3.Response
 import ru.ktsstudio.myapplication.R
 import ru.ktsstudio.myapplication.data.models.GithubUser
+import ru.ktsstudio.myapplication.data.models.RepositorySort
+import ru.ktsstudio.myapplication.data.models.SortOrder
 import ru.ktsstudio.myapplication.data.stores.GsonStore
 import ru.ktsstudio.myapplication.data.stores.OkHttp
 import ru.ktsstudio.myapplication.data.stores.RetrofitStore
@@ -35,6 +38,9 @@ import java.nio.charset.Charset
 
 class WishTabsFragment : Fragment() {
 
+    private val schedulers = AppSchedulers()
+    private val disposable = CompositeDisposable()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_wish_tabs, container, false)
     }
@@ -48,6 +54,7 @@ class WishTabsFragment : Fragment() {
         checkNetworkHttpUrlConnection.setOnClickListener { checkHttpUrlConnection() }
         checkOkhttp.setOnClickListener { checkOkHttp() }
         checkRetrofit.setOnClickListener { checkRetrofit() }
+        checkRetrofitRx.setOnClickListener { checkRetrofitWithRx() }
 
         checkPermissions.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
@@ -198,6 +205,31 @@ class WishTabsFragment : Fragment() {
                     val users = response.body()
                 }
             })
+    }
+
+    private fun checkRetrofitWithRx() {
+        RetrofitStore.service.searchRepositories(
+            searchQuery = "searchQuery",
+            sort = RepositorySort.BY_FORKS,
+            order = SortOrder.ASCENDING
+        )
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.ui())
+            .subscribe({
+                //handle correct response
+            }, {
+                //handle http exception + ioexception
+            })
+            .addTo(disposable)
+    }
+
+    private fun Disposable.addTo(composite: CompositeDisposable) {
+        composite.addAll(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
     }
 
     companion object {

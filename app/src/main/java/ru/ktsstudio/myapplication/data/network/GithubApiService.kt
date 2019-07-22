@@ -1,5 +1,7 @@
 package ru.ktsstudio.myapplication.data.network
 
+import io.reactivex.Completable
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -34,7 +36,7 @@ interface GithubApiService {
         @Query("q") searchQuery: String,
         @Query("sort") sort: RepositorySort?,
         @Query("order") order: SortOrder?
-    ): Call<SearchWrapper<GithubRepository>>
+    ): Single<SearchWrapper<GithubRepository>>
 
     @GET("/search/users")
     fun searchUsers(
@@ -54,7 +56,7 @@ interface GithubApiService {
         @Path("repo") repo: String,
         @Path("comment_id") commentId: String,
         @Body body: ReactionCreateBody
-    ): Call<CommentReaction>
+    ): Completable
 
     @FormUrlEncoded
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")

@@ -40,4 +40,10 @@
         android:layout_height="wrap_content"
         android:text="@string/retrofit" />
 
+    <Button
+        android:id="@+id/checkRetrofitRx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/check_retrofit_with_rx" />
+
 </LinearLayout>

@@ -12,4 +12,5 @@
     <string name="search">Search</string>
     <string name="images">Images</string>
     <string name="image_list_is_empty">Image list is empty</string>
+    <string name="check_retrofit_with_rx">Check retrofit with Rx</string>
 </resources>
