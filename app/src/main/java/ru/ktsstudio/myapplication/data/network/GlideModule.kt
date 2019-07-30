@@ -8,15 +8,18 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import okhttp3.OkHttpClient
-import ru.ktsstudio.myapplication.data.stores.OkHttp
+import ru.ktsstudio.myapplication.di.DI
+import toothpick.Toothpick
 import java.io.InputStream
 
 @GlideModule
 class GlideModule : AppGlideModule() {
-    private val okHttpClient: OkHttpClient = OkHttp.instance
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        val factory = OkHttpUrlLoader.Factory(okHttpClient)
+
+        val client = Toothpick.openScope(DI.APP).getInstance(OkHttpClient::class.java)
+
+        val factory = OkHttpUrlLoader.Factory(client)
 
         glide.registry.replace(GlideUrl::class.java, InputStream::class.java, factory)
     }

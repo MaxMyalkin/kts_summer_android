@@ -9,17 +9,28 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_image.*
-import leakcanary.LeakCanary
 import leakcanary.LeakSentry
 import retrofit2.Call
 import ru.ktsstudio.myapplication.R
 import ru.ktsstudio.myapplication.data.models.GithubUser
 import ru.ktsstudio.myapplication.data.models.SearchWrapper
-import ru.ktsstudio.myapplication.data.stores.RetrofitStore
+import ru.ktsstudio.myapplication.data.network.GithubApiService
+import ru.ktsstudio.myapplication.di.DI
+import toothpick.Toothpick
+import javax.inject.Inject
 
 class ImageFragment : Fragment() {
 
+    @Inject
+    lateinit var api: GithubApiService
+
     private var currentCall: Call<*>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val scope = Toothpick.openScope(DI.APP)
+        Toothpick.inject(this, scope)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_image, container, false)
@@ -54,7 +65,7 @@ class ImageFragment : Fragment() {
             progressBar.isVisible = true
             emptyText.isVisible = false
 
-            RetrofitStore.service.searchUsers(searchQuery)
+            api.searchUsers(searchQuery)
                 .apply { currentCall = this }
                 .enqueue(object : retrofit2.Callback<SearchWrapper<GithubUser>> {
                     override fun onFailure(call: retrofit2.Call<SearchWrapper<GithubUser>>, t: Throwable) {

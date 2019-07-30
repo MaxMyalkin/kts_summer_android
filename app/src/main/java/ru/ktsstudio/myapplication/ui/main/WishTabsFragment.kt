@@ -12,22 +12,25 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_wish_tabs.*
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import ru.ktsstudio.myapplication.R
 import ru.ktsstudio.myapplication.data.models.GithubUser
 import ru.ktsstudio.myapplication.data.models.RepositorySort
 import ru.ktsstudio.myapplication.data.models.SortOrder
-import ru.ktsstudio.myapplication.data.stores.GsonStore
-import ru.ktsstudio.myapplication.data.stores.OkHttp
-import ru.ktsstudio.myapplication.data.stores.RetrofitStore
+import ru.ktsstudio.myapplication.data.network.AddTokenHeaderInterceptor
+import ru.ktsstudio.myapplication.data.network.GithubApiService
+import ru.ktsstudio.myapplication.di.DI
 import ru.ktsstudio.myapplication.ui.app.ActivityNavigator
+import toothpick.Toothpick
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
 import java.io.IOException
@@ -35,11 +38,24 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
+import javax.inject.Inject
 
 class WishTabsFragment : Fragment() {
 
+    @Inject
+    lateinit var api: GithubApiService
+
+    @Inject
+    lateinit var gson: Gson
+
     private val schedulers = AppSchedulers()
     private val disposable = CompositeDisposable()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val scope = Toothpick.openScope(DI.APP)
+        Toothpick.inject(this, scope)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_wish_tabs, container, false)
@@ -173,7 +189,10 @@ class WishTabsFragment : Fragment() {
             .get()
             .build()
 
-        OkHttp.instance.newCall(request)
+        OkHttpClient.Builder()
+            .addInterceptor(AddTokenHeaderInterceptor())
+            .build()
+            .newCall(request)
             .enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e("OkHttp", "response fail", e)
@@ -185,13 +204,13 @@ class WishTabsFragment : Fragment() {
                     val responseString = response.body()?.string().orEmpty()
 
                     val type = object : TypeToken<List<GithubUser>>() {}.type
-                    val users: List<GithubUser> = GsonStore.instance.fromJson(responseString, type)
+                    val users: List<GithubUser> = gson.fromJson(responseString, type)
                 }
             })
     }
 
     private fun checkRetrofit() {
-        RetrofitStore.service.getUsers()
+        api.getUsers()
             .enqueue(object : retrofit2.Callback<List<GithubUser>> {
                 override fun onFailure(call: retrofit2.Call<List<GithubUser>>, t: Throwable) {
                     Log.e("Retrofit", "response fail", t)
@@ -208,7 +227,7 @@ class WishTabsFragment : Fragment() {
     }
 
     private fun checkRetrofitWithRx() {
-        RetrofitStore.service.searchRepositories(
+        api.searchRepositories(
             searchQuery = "searchQuery",
             sort = RepositorySort.BY_FORKS,
             order = SortOrder.ASCENDING
